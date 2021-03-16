@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using spritely.Services;
 
 namespace spritely
 {
@@ -32,10 +33,13 @@ namespace spritely
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "spritely", Version = "v1" });
             });
+
+            services.AddSingleton<RedisService>();
+            services.AddSingleton<RandomKeyGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RedisService redisService)
         {
             if (env.IsDevelopment())
             {
@@ -54,6 +58,8 @@ namespace spritely
             {
                 endpoints.MapControllers();
             });
+
+            redisService.connect();
         }
     }
 }
