@@ -6,6 +6,7 @@ namespace spritely.Repositories
     public class UrlStore
     {
         private ConnectionMultiplexer _connection;
+
         public UrlStore(RedisService redisConnection)
         {
             _connection = redisConnection.connection;
@@ -13,19 +14,30 @@ namespace spritely.Repositories
 
         public string getValue(string key)
         {
-            var db = _connection.GetDatabase();
-            var result = db.StringGet(key);
+            try
+            {
+                var db = _connection.GetDatabase();
+                var result = db.StringGet(key);
 
-            return result.HasValue ? result.ToString() : ""; 
+                return result.HasValue ? result.ToString() : "";
+            }
+            catch(RedisException ex)
+            {
+                throw ex;
+            }
         }
 
-        public void setValue(string value)
+        public void setValue(string key, string value)
         {
-            /*
-            var keyPair = new{ key: value };
-            var db = _connection.GetDatabase();
-            db.StringSet(new { "key": value });
-            */
+            try
+            {
+                var db = _connection.GetDatabase();
+                db.StringSet(key, value);
+            }
+            catch(RedisException ex)
+            {
+                throw ex;
+            }
         }
     }
 }
