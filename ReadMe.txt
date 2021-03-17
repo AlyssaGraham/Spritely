@@ -32,6 +32,14 @@ Spritely UI: http://localhost:8080
 Spritely Api: http://localhost:5000
 Swagger: http://localhost:5000/swagger/v1/swagger.json
 
+Configurations
+.\spritely\spritely\spritely-ui\src\config\config.json 
+	spritelyHost: host of Spritely backend
+
+.\spritely\spritely\appsettings.json
+	Redis.host: Redis instance host
+	Redis.port: Redis instance port
+
 Limitations
 - Add testing
 - Logging needs to be implemented
